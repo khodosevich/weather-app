@@ -9,7 +9,7 @@ module.exports = (argv) => {
             main: path.resolve(__dirname, './src/main.tsx')
         },
         output: {
-            path: path.resolve(__dirname, './built'),
+            path: path.resolve(__dirname, './build'),
             filename: "bungle.js"
         },
         module:{
