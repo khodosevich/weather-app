@@ -1,24 +1,22 @@
 import { Box, Container, CssBaseline, Typography } from "@mui/material";
 import SearchComponent from "./SearchComponent";
-import  {  useEffect, useState } from "react";
+import  {  useState } from "react";
 import Card from "./Card";
 
 const App = () => {
 
-   
-    const [currentCity, setCurrentCity] = useState()
+    const [currentCity, setCurrentCity] = useState({
+        name: "",
+        favorite: false,
+        isSet: false
+    })
 
-    const [favorites] = useState([
-        { name: 'minsk' },
-        { name: 'moscow' },
-        { name: 'kazan' }
+    const [favorites,setFavorites] = useState([
+        { name: 'minsk' , favorite: true},
+        { name: 'moscow', favorite: true },
+        { name: 'new york', favorite: true }
     ]);
-
    
-
-    useEffect(() => {
-    }, [currentCity]);
-
     return(
         <Box>
             <Container>
@@ -28,19 +26,19 @@ const App = () => {
                     <SearchComponent setCurrentCity={setCurrentCity}/>    
 
                     {
-                        currentCity && (
-                            <Card name={currentCity} />
-                        )
+                        currentCity.isSet && 
+                        <Card name={currentCity.name} favorite={currentCity.favorite} setFavorites={setFavorites}/>
                     }
-                    
 
                     <Typography variant="h4" sx={{ marginTop: '20px' }}>Favorites:</Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        {favorites.map((favoriteCity, index) => (
-                            <Card key={index} name={favoriteCity.name}/>
-                        ))}
+                        { favorites.length > 0 
+                            ?  favorites.map((favoriteCity) => (
+                            <Card key={favoriteCity.name} name={favoriteCity.name} favorite={favoriteCity.favorite} setFavorites={setFavorites}/> 
+                         )) : 
+                            <Typography variant="h5" sx={{ marginTop: '20px' }}>No favorites</Typography>      
+                        }
                     </Box>
-
                 </Box>
             </Container>
         </Box>

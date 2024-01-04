@@ -1,8 +1,9 @@
 import { useState, useEffect, Fragment } from 'react';
-import { Box, Typography , CircularProgress } from '@mui/material';
+import { Box, Typography , CircularProgress, IconButton } from '@mui/material';
 import {searchMethod  } from "../api/methods"
+import StarIcon from "@mui/icons-material/Star"
 
-const Card = ({ name }) => {
+const Card = ({ name, favorite,setFavorites }) => {
   
     console.log(name)
 
@@ -13,7 +14,12 @@ const Card = ({ name }) => {
         },
         main: {
             temp: ""
-        }
+        },
+        weather: [
+            {
+                main: ""
+            }
+        ]
     })
 
     const [isFetching, setIsFetching] = useState(false)
@@ -24,6 +30,7 @@ const Card = ({ name }) => {
             setIsFetching(true)
             const data = await searchMethod(name)
             setInfoCard(data)
+            console.log(data)
         }catch(err){
             console.log(err)
         }finally{
@@ -34,6 +41,21 @@ const Card = ({ name }) => {
     useEffect(() => {
         getCards()
     }, [])
+
+    const handlerFavorite = () => {
+        setFavorites(prev => {
+          let cityIndex = prev.findIndex(info => (info.name).toLowerCase() === (infoCard.name).toLowerCase());
+           
+          console.log(cityIndex);
+            
+          if (cityIndex !== -1) {
+            return prev.filter(info => (info.name).toLowerCase()  !== name.toLowerCase());
+          } else {
+            return [...prev, { ...infoCard, favorite: true }];
+          }
+        });
+      };
+      
 
   return (
 
@@ -51,19 +73,33 @@ const Card = ({ name }) => {
                     alignItems: 'center',
                     padding: '20px',
                     position: 'relative',
-                    width:"300px",
-                    height:"200px"
+                    width:"350px",
+                    height:"100%"
                     }}
-            >
-                <Typography variant="h3">{infoCard.name}</Typography>
-                <Typography variant="h4">
-                    {
-                        Math.round(parseInt(infoCard.main.temp, 10))
-                    }&deg;C
-                </Typography>
-                <Typography variant="h4">{infoCard.sys.country}</Typography>
-                
-            </Box>
+                    >
+                        <Typography variant="h3">{infoCard.name},{infoCard.sys.country}</Typography>
+                        <Typography variant="h4">
+                            {
+                                Math.round(parseInt(infoCard.main.temp, 10))
+                            }&deg;C
+                        </Typography>
+                        
+                        <Typography variant="h4">{infoCard.weather[0].main}</Typography>
+
+                        <IconButton
+                            onClick={handlerFavorite}
+                            sx={{
+                                position: 'absolute',
+                                top: '5px',
+                                right: '5px',
+                                color: favorite ? "gold" : "grey", 
+                            }}
+                        >
+                            <StarIcon />
+                        </IconButton>
+
+
+                    </Box>
             }
         </Fragment>
     
