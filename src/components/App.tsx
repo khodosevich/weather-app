@@ -27,14 +27,14 @@ const App = () => {
 
                     {
                         currentCity.isSet && 
-                        <Card name={currentCity.name} favorite={currentCity.favorite} setFavorites={setFavorites}/>
+                        <Card name={currentCity.name} favorite={currentCity.favorite} setFavorites={setFavorites} setCurrentCity={setCurrentCity}/>
                     }
 
                     <Typography variant="h4" sx={{ marginTop: '20px' }}>Favorites:</Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                         { favorites.length > 0 
-                            ?  favorites.map((favoriteCity) => (
-                            <Card key={favoriteCity.name} name={favoriteCity.name} favorite={favoriteCity.favorite} setFavorites={setFavorites}/> 
+                            ?  [...favorites].reverse().map((favoriteCity) => (
+                            <Card key={favoriteCity.name} name={favoriteCity.name} favorite={favoriteCity.favorite} setFavorites={setFavorites} setCurrentCity={setCurrentCity}/> 
                          )) : 
                             <Typography variant="h5" sx={{ marginTop: '20px' }}>No favorites</Typography>      
                         }

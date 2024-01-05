@@ -3,10 +3,8 @@ import { Box, Typography , CircularProgress, IconButton } from '@mui/material';
 import {searchMethod  } from "../api/methods"
 import StarIcon from "@mui/icons-material/Star"
 
-const Card = ({ name, favorite,setFavorites }) => {
+const Card = ({ name, favorite,setFavorites,setCurrentCity  }) => {
   
-    console.log(name)
-
     const [infoCard, setInfoCard] = useState({
         name: "",
         sys: {
@@ -30,7 +28,6 @@ const Card = ({ name, favorite,setFavorites }) => {
             setIsFetching(true)
             const data = await searchMethod(name)
             setInfoCard(data)
-            console.log(data)
         }catch(err){
             console.log(err)
         }finally{
@@ -45,9 +42,9 @@ const Card = ({ name, favorite,setFavorites }) => {
     const handlerFavorite = () => {
         setFavorites(prev => {
           let cityIndex = prev.findIndex(info => (info.name).toLowerCase() === (infoCard.name).toLowerCase());
-           
-          console.log(cityIndex);
-            
+                     
+          setCurrentCity({name : "", favorite : false, isSet : false});
+          
           if (cityIndex !== -1) {
             return prev.filter(info => (info.name).toLowerCase()  !== name.toLowerCase());
           } else {
